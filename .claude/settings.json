@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [],
+    "deny": []
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/auto-format.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/test-on-change.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/typecheck-on-save.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
