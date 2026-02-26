@@ -82,6 +82,15 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'media',
             },
             {
+              name: 'contentSource',
+              type: 'select',
+              defaultValue: 'richText',
+              options: [
+                { label: 'Rich Text', value: 'richText' },
+                { label: 'Markdown', value: 'markdown' },
+              ],
+            },
+            {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({
@@ -98,6 +107,15 @@ export const Posts: CollectionConfig<'posts'> = {
               }),
               label: false,
               required: true,
+            },
+            {
+              name: 'markdown',
+              type: 'textarea',
+              admin: {
+                condition: (_, siblingData) => siblingData?.contentSource === 'markdown',
+                rows: 20,
+                description: 'Write post content in Markdown format',
+              },
             },
           ],
           label: 'Content',
