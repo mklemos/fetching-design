@@ -1,29 +1,35 @@
-import clsx from 'clsx'
 import React from 'react'
 
 interface Props {
   className?: string
-  loading?: 'lazy' | 'eager'
-  priority?: 'auto' | 'high' | 'low'
 }
 
-export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-
+export const Logo = ({ className }: Props) => {
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 260 34"
+      fill="none"
+      className={className}
+      aria-label="fetching.design"
+      role="img"
+    >
+      <text
+        x="0"
+        y="26"
+        fontFamily="Inter, sans-serif"
+        fontSize="22"
+        fontWeight="600"
+        fill="var(--brand-platinum, #EBEBEB)"
+      >
+        <tspan>fetching</tspan>
+        <tspan fill="var(--brand-clay, #D4A052)">.</tspan>
+        <tspan fill="var(--brand-clay, #D4A052)">[)</tspan>
+        <tspan>esign</tspan>
+      </text>
+      <rect data-cursor="" x="242" y="8" width="2" height="20" fill="var(--brand-clay, #D4A052)">
+        <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite" />
+      </rect>
+    </svg>
   )
 }
