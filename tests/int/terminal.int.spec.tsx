@@ -1,6 +1,18 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
+import React from 'react'
 import { parseCommand } from '@/components/Terminal/lib/command-parser'
 import { createRegistry, defaultCommands } from '@/components/Terminal/lib/command-registry'
+import { Terminal } from '@/components/Terminal/Terminal'
+import { TerminalProvider, useTerminal } from '@/components/Terminal/TerminalProvider'
+
+const mockPush = vi.fn()
+let mockPathname = '/'
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: mockPush }),
+  usePathname: () => mockPathname,
+}))
 
 describe('Command parser', () => {
   it('parses a simple command', () => {
@@ -152,5 +164,253 @@ describe('Command registry', () => {
   it('defaultCommands exports the registry', () => {
     expect(defaultCommands).toBeDefined()
     expect(defaultCommands.has('help')).toBe(true)
+  })
+})
+
+describe('Terminal UI component', () => {
+  afterEach(() => {
+    cleanup()
+  })
+
+  beforeEach(() => {
+    mockPush.mockClear()
+    mockPathname = '/'
+  })
+
+  function renderTerminal() {
+    return render(
+      <TerminalProvider>
+        <Terminal />
+      </TerminalProvider>,
+    )
+  }
+
+  it('renders terminal chrome elements', () => {
+    renderTerminal()
+    expect(screen.getByLabelText('Terminal input')).toBeDefined()
+    expect(screen.getByTestId('terminal')).toBeDefined()
+  })
+
+  it('renders with prompt indicator', () => {
+    renderTerminal()
+    const prompt = screen.getByTestId('terminal').querySelector('[class*="brand-clay"]')
+    expect(prompt).not.toBeNull()
+    expect(prompt!.textContent).toBe('$')
+  })
+
+  it('submits command on Enter', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input')
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'help' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    expect(screen.getByText('Available commands:')).toBeDefined()
+  })
+
+  it('echoes submitted commands in output', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input')
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'whoami' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    expect(screen.getByText('$ whoami')).toBeDefined()
+  })
+
+  it('clears input after submission', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input') as HTMLInputElement
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'help' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    expect(input.value).toBe('')
+  })
+
+  it('shows error for unknown commands', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input')
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'foobar' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    expect(screen.getByText(/command not found: foobar/)).toBeDefined()
+  })
+
+  it('navigates via router on fetch commands', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input')
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'fetch projects' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    expect(mockPush).toHaveBeenCalledWith('/projects')
+  })
+
+  it('supports command history with ArrowUp', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input') as HTMLInputElement
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'whoami' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+      fireEvent.change(input, { target: { value: 'help' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+    })
+    expect(input.value).toBe('help')
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+    })
+    expect(input.value).toBe('whoami')
+  })
+
+  it('supports command history with ArrowDown', async () => {
+    renderTerminal()
+    const input = screen.getByLabelText('Terminal input') as HTMLInputElement
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'whoami' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+      fireEvent.change(input, { target: { value: 'help' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+    })
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+    })
+    expect(input.value).toBe('whoami')
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+    })
+    expect(input.value).toBe('help')
+  })
+
+  it('has an aria-live region for output', () => {
+    renderTerminal()
+    const output = screen.getByTestId('terminal-output')
+    expect(output.getAttribute('aria-live')).toBe('polite')
+  })
+})
+
+describe('Terminal state machine', () => {
+  afterEach(() => {
+    cleanup()
+  })
+
+  beforeEach(() => {
+    mockPush.mockClear()
+    mockPathname = '/'
+  })
+
+  function StateInspector() {
+    const { mode } = useTerminal()
+    return <div data-testid="mode">{mode}</div>
+  }
+
+  it('starts in hero mode on homepage', () => {
+    mockPathname = '/'
+    render(
+      <TerminalProvider>
+        <StateInspector />
+      </TerminalProvider>,
+    )
+    expect(screen.getByTestId('mode').textContent).toBe('hero')
+  })
+
+  it('switches to fab mode on non-homepage', () => {
+    mockPathname = '/projects'
+    render(
+      <TerminalProvider>
+        <StateInspector />
+      </TerminalProvider>,
+    )
+    expect(screen.getByTestId('mode').textContent).toBe('fab')
+  })
+
+  it('returns to hero mode when navigating back to homepage', () => {
+    mockPathname = '/projects'
+    const { rerender } = render(
+      <TerminalProvider>
+        <StateInspector />
+      </TerminalProvider>,
+    )
+    expect(screen.getByTestId('mode').textContent).toBe('fab')
+
+    mockPathname = '/'
+    rerender(
+      <TerminalProvider>
+        <StateInspector />
+      </TerminalProvider>,
+    )
+    expect(screen.getByTestId('mode').textContent).toBe('hero')
+  })
+
+  it('transitions to overlay mode when toggled', () => {
+    mockPathname = '/projects'
+
+    function OverlayToggler() {
+      const { mode, toggleOverlay } = useTerminal()
+      return (
+        <div>
+          <div data-testid="mode">{mode}</div>
+          <button onClick={toggleOverlay}>toggle</button>
+        </div>
+      )
+    }
+
+    render(
+      <TerminalProvider>
+        <OverlayToggler />
+      </TerminalProvider>,
+    )
+
+    expect(screen.getByTestId('mode').textContent).toBe('fab')
+    fireEvent.click(screen.getByText('toggle'))
+    expect(screen.getByTestId('mode').textContent).toBe('overlay')
+    fireEvent.click(screen.getByText('toggle'))
+    expect(screen.getByTestId('mode').textContent).toBe('fab')
+  })
+
+  it('preserves output across mode changes', async () => {
+    mockPathname = '/'
+
+    function TerminalWithInspector() {
+      const { output } = useTerminal()
+      return (
+        <div>
+          <Terminal />
+          <div data-testid="output-count">{output.length}</div>
+        </div>
+      )
+    }
+
+    const { rerender } = render(
+      <TerminalProvider>
+        <TerminalWithInspector />
+      </TerminalProvider>,
+    )
+
+    const input = screen.getByLabelText('Terminal input')
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'help' } })
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+
+    const countBefore = Number(screen.getByTestId('output-count').textContent)
+    expect(countBefore).toBeGreaterThan(0)
+
+    mockPathname = '/projects'
+    rerender(
+      <TerminalProvider>
+        <TerminalWithInspector />
+      </TerminalProvider>,
+    )
+
+    const countAfter = Number(screen.getByTestId('output-count').textContent)
+    expect(countAfter).toBe(countBefore)
   })
 })
