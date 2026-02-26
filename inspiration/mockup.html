@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fetching.design - Palette Mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a08;
+        --surface: #151513;
+        --surface-border: #222220;
+        --accent: #d4a052;
+        --accent-hover: #e0b068;
+        --muted: #666666;
+        --text: #ebebeb;
+        --text-secondary: #999999;
+        --code-bg: #111110;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 48px;
+        border-bottom: 1px solid var(--surface-border);
+      }
+      .logo {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      .logo .bracket {
+        letter-spacing: 0.05em;
+      }
+      .logo .cursor {
+        color: var(--accent);
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+      .nav-links {
+        display: flex;
+        gap: 32px;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+      }
+      .nav-links a.active {
+        color: var(--text);
+      }
+
+      /* HERO */
+      .hero {
+        padding: 120px 48px 80px;
+        max-width: 720px;
+      }
+      .hero h1 {
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin-bottom: 24px;
+      }
+      .hero h1 .accent {
+        color: var(--accent);
+      }
+      .hero p {
+        font-size: 18px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 36px;
+        max-width: 540px;
+      }
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent);
+        color: var(--bg);
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+      }
+      .hero-cta-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: var(--text);
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        border: 1px solid var(--surface-border);
+        margin-left: 12px;
+      }
+
+      /* TERMINAL */
+      .terminal-section {
+        padding: 0 48px 80px;
+        max-width: 720px;
+      }
+      .terminal {
+        background: var(--code-bg);
+        border: 1px solid var(--surface-border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .terminal-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--surface-border);
+      }
+      .terminal-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .terminal-dot.r { background: #ff5f57; }
+      .terminal-dot.y { background: #febc2e; }
+      .terminal-dot.g { background: #28c840; }
+      .terminal-title {
+        flex: 1;
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--muted);
+        margin-right: 52px;
+      }
+      .terminal-body {
+        padding: 20px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.8;
+        max-height: 360px;
+        overflow-y: auto;
+        cursor: text;
+      }
+      .terminal-body::-webkit-scrollbar { width: 6px; }
+      .terminal-body::-webkit-scrollbar-track { background: transparent; }
+      .terminal-body::-webkit-scrollbar-thumb { background: var(--surface-border); border-radius: 3px; }
+      .terminal-line { white-space: pre-wrap; word-break: break-word; }
+      .terminal-line .prompt { color: var(--accent); }
+      .terminal-line .cmd { color: var(--text); }
+      .terminal-line .out { color: var(--text-secondary); }
+      .terminal-line .out-accent { color: var(--accent); }
+      .terminal-line .out-green { color: #8bb88a; }
+      .terminal-line .out-purple { color: #c4b5fd; }
+      .terminal-line .out-muted { color: var(--muted); }
+      .terminal-line .project-link {
+        color: var(--accent);
+        cursor: pointer;
+        text-decoration: none;
+        border-bottom: 1px dashed transparent;
+        transition: border-color 0.2s;
+      }
+      .terminal-line .project-link:hover { border-bottom-color: var(--accent); }
+      .terminal-input-line {
+        display: flex;
+        align-items: center;
+      }
+      .terminal-input-line .prompt { color: var(--accent); }
+      #terminal-input {
+        background: none;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        flex: 1;
+        caret-color: var(--accent);
+        line-height: 1.8;
+      }
+      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+      .cursor-blink { animation: blink 1s step-end infinite; color: var(--accent); }
+
+      /* SECTION LABEL */
+      .section-label {
+        padding: 0 48px;
+        margin-bottom: 24px;
+      }
+      .section-label h2 {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      /* PROJECT CARDS */
+      .projects {
+        padding: 0 48px 80px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        max-width: 900px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        border-radius: 8px;
+        padding: 28px;
+        transition: border-color 0.2s;
+      }
+      .card:hover {
+        border-color: var(--accent);
+      }
+      .card-tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+        margin-bottom: 12px;
+      }
+      .card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        letter-spacing: -0.01em;
+      }
+      .card p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+      .card-tech {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .card-tech span {
+        font-size: 11px;
+        color: var(--muted);
+        background: var(--bg);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* BLOG PREVIEW */
+      .blog-section {
+        padding: 0 48px 80px;
+        max-width: 720px;
+      }
+      .blog-item {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--surface-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .blog-item:first-child {
+        border-top: 1px solid var(--surface-border);
+      }
+      .blog-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .blog-title:hover {
+        color: var(--accent);
+      }
+      .blog-date {
+        font-size: 13px;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 40px 48px;
+        border-top: 1px solid var(--surface-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      footer p {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      /* STATUS INDICATOR */
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #4daa7a;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">fetching<span>.</span><span class="bracket">[)</span>esign<span class="cursor">_</span></div>
+      <div class="nav-links">
+        <a href="#" class="active">Projects</a>
+        <a href="#">Blog</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1>
+        I build web applications<br />that <span class="accent">deliver</span>.
+      </h1>
+      <p>
+        Full-stack developer specializing in modern web applications. Every
+        project is crafted with performance, reliability, and clean architecture
+        in mind.
+      </p>
+      <a href="#" class="hero-cta">View Projects</a>
+      <a href="#" class="hero-cta-secondary">Read the Blog</a>
+    </div>
+
+    <div class="terminal-section">
+      <div class="terminal" id="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <div class="terminal-title">fetching.design &mdash; bash</div>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-line"><span class="out-muted">Welcome to fetching.design. Type <span class="out-accent">help</span> to get started.</span></div>
+          <div class="terminal-input-line">
+            <span class="prompt">~ $&nbsp;</span>
+            <input type="text" id="terminal-input" autofocus autocomplete="off" spellcheck="false" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><h2>Projects</h2></div>
+    <div class="projects">
+      <div class="card" id="project-team-builder">
+        <div class="card-tag">Web Application</div>
+        <h3>Team Builder</h3>
+        <p>
+          Classroom team formation tool that creates balanced groups based on
+          skills, preferences, and compatibility scores.
+        </p>
+        <div class="card-tech">
+          <span>Next.js</span>
+          <span>TypeScript</span>
+          <span>PostgreSQL</span>
+        </div>
+      </div>
+      <div class="card" id="project-interview-prep">
+        <div class="card-tag">AI / Full Stack</div>
+        <h3>Interview Prep</h3>
+        <p>
+          AI-powered mock interview platform with real-time feedback, scoring,
+          and personalized improvement plans.
+        </p>
+        <div class="card-tech">
+          <span>React</span>
+          <span>Python</span>
+          <span>OpenAI</span>
+        </div>
+      </div>
+      <div class="card" id="project-eoscout">
+        <div class="card-tag">Research Tool</div>
+        <h3>EOTECH IP Scout</h3>
+        <p>
+          Patent and intellectual property research tool for identifying
+          competitive technologies and prior art.
+        </p>
+        <div class="card-tech">
+          <span>Next.js</span>
+          <span>Node.js</span>
+          <span>REST APIs</span>
+        </div>
+      </div>
+      <div class="card" id="project-vista-group">
+        <div class="card-tag">WordPress</div>
+        <h3>Vista Group</h3>
+        <p>
+          Real estate business site with property listings, neighborhood guides,
+          and lead generation forms.
+        </p>
+        <div class="card-tech">
+          <span>WordPress</span>
+          <span>PHP</span>
+          <span>MySQL</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><h2>Recent Writing</h2></div>
+    <div class="blog-section">
+      <div class="blog-item">
+        <a href="#" class="blog-title"
+          >Self-hosting a headless CMS on a $6/mo VPS</a
+        >
+        <span class="blog-date">Feb 2026</span>
+      </div>
+      <div class="blog-item">
+        <a href="#" class="blog-title"
+          >Why I switched from MongoDB to PostgreSQL</a
+        >
+        <span class="blog-date">Jan 2026</span>
+      </div>
+      <div class="blog-item">
+        <a href="#" class="blog-title"
+          >Nginx reverse proxy recipes for multi-app servers</a
+        >
+        <span class="blog-date">Dec 2025</span>
+      </div>
+    </div>
+
+    <footer>
+      <div>
+        <p>Max Lemos &mdash; fetching.[)esign</p>
+        <div class="status">
+          <span class="status-dot"></span>
+          All systems operational
+        </div>
+      </div>
+      <p><a href="#">max@fetching.design</a></p>
+    </footer>
+    <script>
+      const input = document.getElementById('terminal-input');
+      const body = document.getElementById('terminal-body');
+      const history = [];
+      let historyIndex = -1;
+
+      const projects = {
+        'team-builder': {
+          name: 'Team Builder',
+          tag: 'Web Application',
+          desc: 'Classroom team formation tool. Balanced groups based on skills, preferences, and compatibility.',
+          tech: ['Next.js', 'TypeScript', 'PostgreSQL'],
+          url: 'https://team-builder.fetching.design',
+          id: 'project-team-builder'
+        },
+        'interview-prep': {
+          name: 'Interview Prep',
+          tag: 'AI / Full Stack',
+          desc: 'AI-powered mock interview platform with real-time feedback and personalized improvement plans.',
+          tech: ['React', 'Python', 'OpenAI'],
+          url: 'https://interview.fetching.design',
+          id: 'project-interview-prep'
+        },
+        'eoscout': {
+          name: 'EOTECH IP Scout',
+          tag: 'Research Tool',
+          desc: 'Patent and IP research tool for identifying competitive technologies and prior art.',
+          tech: ['Next.js', 'Node.js', 'REST APIs'],
+          url: 'https://eoscout.fetching.design',
+          id: 'project-eoscout'
+        },
+        'vista-group': {
+          name: 'Vista Group',
+          tag: 'WordPress',
+          desc: 'Real estate business site with property listings, neighborhood guides, and lead generation.',
+          tech: ['WordPress', 'PHP', 'MySQL'],
+          url: 'https://vistagroup.fetching.design',
+          id: 'project-vista-group'
+        }
+      };
+
+      function scrollTerminal() {
+        body.scrollTop = body.scrollHeight;
+      }
+
+      function addLine(html) {
+        const inputLine = body.querySelector('.terminal-input-line');
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        line.innerHTML = html;
+        body.insertBefore(line, inputLine);
+        scrollTerminal();
+      }
+
+      function addLines(lines, delay) {
+        input.disabled = true;
+        let i = 0;
+        function next() {
+          if (i < lines.length) {
+            addLine(lines[i]);
+            i++;
+            setTimeout(next, delay);
+          } else {
+            input.disabled = false;
+            input.focus();
+            scrollTerminal();
+          }
+        }
+        next();
+      }
+
+      function scrollToProject(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.borderColor = 'var(--accent)';
+          setTimeout(() => { el.style.borderColor = ''; }, 2000);
+        }
+      }
+
+      function handleCommand(raw) {
+        const cmd = raw.trim().toLowerCase();
+        if (!cmd) return;
+
+        history.push(raw.trim());
+        historyIndex = history.length;
+
+        // Echo the command
+        addLine(`<span class="prompt">~ $</span> <span class="cmd">${escapeHtml(raw.trim())}</span>`);
+
+        // Parse
+        if (cmd === 'help' || cmd === 'fetch --help' || cmd === '--help' || cmd === '-h') {
+          addLines([
+            '<span class="out-muted">Available commands:</span>',
+            '',
+            '  <span class="out-accent">fetch projects</span>       <span class="out-muted">List all projects</span>',
+            '  <span class="out-accent">fetch &lt;name&gt;</span>         <span class="out-muted">View project details</span>',
+            '  <span class="out-accent">fetch status</span>         <span class="out-muted">System status</span>',
+            '  <span class="out-accent">whoami</span>               <span class="out-muted">About me</span>',
+            '  <span class="out-accent">clear</span>                <span class="out-muted">Clear terminal</span>',
+            ''
+          ], 30);
+
+        } else if (cmd === 'fetch projects' || cmd === 'ls' || cmd === 'ls -la') {
+          const lines = [
+            '<span class="out-muted">GET /api/projects  </span><span class="out-green">200 OK</span>',
+            ''
+          ];
+          for (const [slug, p] of Object.entries(projects)) {
+            lines.push(`  <span class="project-link" onclick="handleFetch('${slug}')">${slug.padEnd(18)}</span> <span class="out-muted">${p.tag}</span>`);
+          }
+          lines.push('');
+          lines.push('<span class="out-muted">Type </span><span class="out-accent">fetch &lt;name&gt;</span><span class="out-muted"> to view details.</span>');
+          addLines(lines, 30);
+
+        } else if (cmd.startsWith('fetch ')) {
+          const slug = cmd.replace('fetch ', '').trim().replace(/\s+/g, '-');
+          const p = projects[slug];
+          if (p) {
+            const techStr = p.tech.map(t => `<span class="out-purple">${t}</span>`).join('<span class="out-muted"> · </span>');
+            addLines([
+              `<span class="out-muted">GET /api/projects/${slug}  </span><span class="out-green">200 OK</span>`,
+              '',
+              `  <span class="out">${p.name}</span>`,
+              `  <span class="out-muted">${p.desc}</span>`,
+              `  ${techStr}`,
+              '',
+              `  <span class="project-link" onclick="scrollToProject('${p.id}')">↓ Scroll to project</span>    <span class="project-link" onclick="window.open('${p.url}')">→ Open live site</span>`,
+              ''
+            ], 40);
+            setTimeout(() => scrollToProject(p.id), 600);
+
+          } else if (slug === 'status') {
+            addLines([
+              '<span class="out-muted">GET /api/status  </span><span class="out-green">200 OK</span>',
+              '',
+              '  <span class="out-green">●</span> <span class="out">All systems operational</span>',
+              '  <span class="out-muted">Uptime:</span>   <span class="out">99.9%</span>',
+              '  <span class="out-muted">Server:</span>   <span class="out">Vultr VPS (NYC)</span>',
+              '  <span class="out-muted">Stack:</span>    <span class="out">Docker + Nginx</span>',
+              '  <span class="out-muted">SSL:</span>      <span class="out-green">Valid</span>',
+              ''
+            ], 40);
+
+          } else {
+            addLines([
+              `<span class="out-muted">GET /api/projects/${escapeHtml(slug)}  </span><span style="color:#ff5f57">404 Not Found</span>`,
+              '',
+              `<span class="out-muted">No project matching "${escapeHtml(slug)}". Try </span><span class="out-accent">fetch projects</span><span class="out-muted"> to see all.</span>`,
+              ''
+            ], 30);
+          }
+
+        } else if (cmd === 'whoami' || cmd === 'curl max' || cmd === 'about') {
+          addLines([
+            '',
+            '  <span class="out">Max Lemos</span>',
+            '  <span class="out-muted">Full-stack developer. UCSB MTM \'26.</span>',
+            '  <span class="out-muted">I build web applications that deliver.</span>',
+            '',
+            '  <span class="out-muted">Email:</span>  <span class="out-accent">max@fetching.design</span>',
+            '  <span class="out-muted">GitHub:</span> <span class="out">github.com/maxlemos</span>',
+            ''
+          ], 40);
+
+        } else if (cmd === 'clear') {
+          const inputLine = body.querySelector('.terminal-input-line');
+          body.innerHTML = '';
+          body.appendChild(inputLine);
+          input.focus();
+
+        } else if (cmd === 'pwd') {
+          addLine('<span class="out">/home/max/fetching.design</span>');
+
+        } else if (cmd === 'sudo' || cmd.startsWith('sudo ')) {
+          addLine('<span style="color:#ff5f57">Nice try.</span>');
+
+        } else if (cmd === 'exit' || cmd === 'quit') {
+          addLines([
+            '<span class="out-muted">You can check out any time you like,</span>',
+            '<span class="out-muted">but you can never leave.</span>',
+            ''
+          ], 60);
+
+        } else if (cmd === 'npm install' || cmd === 'npm i') {
+          addLine('<span class="out-accent">We use bun here.</span>');
+
+        } else if (cmd === 'curl' || cmd.startsWith('curl ')) {
+          addLines([
+            '<span class="out-muted">Why curl when you can </span><span class="out-accent">fetch</span><span class="out-muted">?</span>',
+            ''
+          ], 30);
+
+        } else {
+          addLines([
+            `<span style="color:#ff5f57">command not found:</span> <span class="out">${escapeHtml(cmd)}</span>`,
+            '<span class="out-muted">Type </span><span class="out-accent">help</span><span class="out-muted"> for available commands.</span>',
+            ''
+          ], 30);
+        }
+      }
+
+      function handleFetch(slug) {
+        handleCommand('fetch ' + slug);
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = input.value;
+          input.value = '';
+          handleCommand(val);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (historyIndex > 0) {
+            historyIndex--;
+            input.value = history[historyIndex];
+          }
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (historyIndex < history.length - 1) {
+            historyIndex++;
+            input.value = history[historyIndex];
+          } else {
+            historyIndex = history.length;
+            input.value = '';
+          }
+        } else if (e.key === 'l' && e.ctrlKey) {
+          e.preventDefault();
+          handleCommand('clear');
+        }
+      });
+
+      // Click anywhere in terminal to focus input
+      document.getElementById('terminal').addEventListener('click', (e) => {
+        if (e.target.closest('.project-link')) return;
+        input.focus();
+      });
+    </script>
+  </body>
+</html>
