@@ -9,7 +9,7 @@ const getPagesSitemap = unstable_cache(
     const SITE_URL =
       process.env.NEXT_PUBLIC_SERVER_URL ||
       process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-      'https://example.com'
+      'https://fetching.design'
 
     const results = await payload.find({
       collection: 'pages',
@@ -33,11 +33,19 @@ const getPagesSitemap = unstable_cache(
 
     const defaultSitemap = [
       {
-        loc: `${SITE_URL}/search`,
+        loc: `${SITE_URL}/projects`,
         lastmod: dateFallback,
       },
       {
         loc: `${SITE_URL}/posts`,
+        lastmod: dateFallback,
+      },
+      {
+        loc: `${SITE_URL}/about`,
+        lastmod: dateFallback,
+      },
+      {
+        loc: `${SITE_URL}/contact`,
         lastmod: dateFallback,
       },
     ]
