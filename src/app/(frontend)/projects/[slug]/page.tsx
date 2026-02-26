@@ -5,6 +5,9 @@ import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import RichText from '@/components/RichText'
+import { JsonLd } from '@/components/StructuredData/JsonLd'
+import { ProjectSchema } from '@/components/StructuredData/ProjectSchema'
+import { BreadcrumbSchema } from '@/components/StructuredData/BreadcrumbSchema'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -40,6 +43,22 @@ export default async function ProjectDetailPage({ params: paramsPromise }: Args)
 
   return (
     <main className="container py-16 md:py-24">
+      <JsonLd
+        data={ProjectSchema({
+          title,
+          description: tagline || '',
+          slug,
+          techStack: techStack?.map((item) => item.tech) || [],
+          url: liveUrl || undefined,
+        })}
+      />
+      <JsonLd
+        data={BreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Projects', url: '/projects' },
+          { name: title, url: `/projects/${slug}` },
+        ])}
+      />
       <div className="mx-auto max-w-3xl">
         <div className="mb-2 flex items-center gap-2">
           <span className="rounded bg-[var(--brand-border)] px-2 py-0.5 text-xs text-[var(--brand-muted)]">

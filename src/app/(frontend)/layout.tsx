@@ -13,6 +13,9 @@ import { TerminalProvider } from '@/components/Terminal/TerminalProvider'
 import { TerminalFAB } from '@/components/Terminal/TerminalFAB'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { JsonLd } from '@/components/StructuredData/JsonLd'
+import { WebSiteSchema } from '@/components/StructuredData/WebSiteSchema'
+import { PersonSchema } from '@/components/StructuredData/PersonSchema'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -42,6 +45,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <JsonLd data={WebSiteSchema()} />
+        <JsonLd data={PersonSchema()} />
       </head>
       <body className="bg-[var(--brand-black)] text-[var(--brand-platinum)]">
         <Providers>

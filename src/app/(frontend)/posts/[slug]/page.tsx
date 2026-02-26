@@ -15,6 +15,9 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { JsonLd } from '@/components/StructuredData/JsonLd'
+import { BlogPostingSchema } from '@/components/StructuredData/BlogPostingSchema'
+import { BreadcrumbSchema } from '@/components/StructuredData/BreadcrumbSchema'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -54,6 +57,22 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   return (
     <article className="pt-16 pb-16">
+      <JsonLd
+        data={BlogPostingSchema({
+          title: post.title,
+          description: post.meta?.description || '',
+          slug: decodedSlug,
+          publishedAt: post.publishedAt || post.createdAt,
+          modifiedAt: post.updatedAt,
+        })}
+      />
+      <JsonLd
+        data={BreadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Blog', url: '/posts' },
+          { name: post.title, url: `/posts/${decodedSlug}` },
+        ])}
+      />
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
