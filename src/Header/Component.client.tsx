@@ -1,42 +1,108 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-import type { Header } from '@/payload-types'
-
 import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
 
-interface HeaderClientProps {
-  data: Header
-}
+const navLinks = [
+  { label: 'Projects', href: '/projects' },
+  { label: 'Blog', href: '/posts' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+]
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
+export const HeaderClient: React.FC = () => {
   const pathname = usePathname()
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setMobileOpen(false)
   }, [pathname])
 
   useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+    const handleScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
+    <header
+      className={`sticky top-0 z-40 w-full transition-colors ${
+        scrolled
+          ? 'border-b border-[var(--brand-border)] bg-[var(--brand-black)]/95 backdrop-blur-sm'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="container flex items-center justify-between py-4">
+        <Link href="/" aria-label="Home">
           <Logo className="w-[180px] h-[28px]" />
         </Link>
-        <HeaderNav data={data} />
+
+        <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
+          {navLinks.map(({ label, href }) => {
+            const isActive = pathname === href || pathname.startsWith(href + '/')
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`text-sm transition-colors ${
+                  isActive
+                    ? 'text-[var(--brand-clay)]'
+                    : 'text-[var(--brand-muted)] hover:text-[var(--brand-platinum)]'
+                }`}
+              >
+                {label}
+              </Link>
+            )
+          })}
+        </nav>
+
+        <button
+          className="md:hidden flex flex-col gap-1.5 p-2"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+        >
+          <span
+            className={`block h-0.5 w-5 bg-[var(--brand-platinum)] transition-transform ${mobileOpen ? 'translate-y-2 rotate-45' : ''}`}
+          />
+          <span
+            className={`block h-0.5 w-5 bg-[var(--brand-platinum)] transition-opacity ${mobileOpen ? 'opacity-0' : ''}`}
+          />
+          <span
+            className={`block h-0.5 w-5 bg-[var(--brand-platinum)] transition-transform ${mobileOpen ? '-translate-y-2 -rotate-45' : ''}`}
+          />
+        </button>
       </div>
+
+      {mobileOpen && (
+        <nav
+          className="md:hidden border-t border-[var(--brand-border)] bg-[var(--brand-black)]"
+          aria-label="Mobile navigation"
+        >
+          <div className="container flex flex-col gap-4 py-4">
+            {navLinks.map(({ label, href }) => {
+              const isActive = pathname === href || pathname.startsWith(href + '/')
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`text-sm ${
+                    isActive
+                      ? 'text-[var(--brand-clay)]'
+                      : 'text-[var(--brand-muted)] hover:text-[var(--brand-platinum)]'
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
+          </div>
+        </nav>
+      )}
     </header>
   )
 }
