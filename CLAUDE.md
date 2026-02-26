@@ -15,6 +15,7 @@ Personal portfolio and boutique web development agency site for Max Lemos. Showc
 ## Architecture
 
 This is a static/SSR portfolio site. Tech stack TBD but likely:
+
 - Framework: Next.js or Astro (SSR/SSG)
 - Styling: Tailwind CSS
 - Language: TypeScript (strict mode)
@@ -38,13 +39,13 @@ SSH: `ssh vultr-vista` (user: max, key: id_ed25519)
 
 The server runs a unified nginx reverse proxy (`interview-prep-proxy` container) that routes all subdomains:
 
-| Domain | App |
-|--------|-----|
+| Domain                                | App                       |
+| ------------------------------------- | ------------------------- |
 | fetching.design / www.fetching.design | **This site** (portfolio) |
-| team-builder.fetching.design | Team Builder |
-| interview.fetching.design | Interview Prep |
-| eoscout.fetching.design | EOTECH IP Scout |
-| vistagroup.fetching.design | Vista Group WordPress |
+| team-builder.fetching.design          | Team Builder              |
+| interview.fetching.design             | Interview Prep            |
+| eoscout.fetching.design               | EOTECH IP Scout           |
+| vistagroup.fetching.design            | Vista Group WordPress     |
 
 **Proxy config**: `/home/max/interview-prep/nginx_unified.conf` on the server
 **SSL**: Let's Encrypt via certbot Docker container, webroot at `/home/max/interview-prep/certbot-webroot/`
@@ -68,6 +69,7 @@ Currently the root domain serves an inline HTML placeholder from the nginx confi
 ## Conventions
 
 ### Code Style
+
 - TypeScript strict mode
 - Prefer `const` over `let`
 - Use named exports
@@ -75,6 +77,7 @@ Currently the root domain serves an inline HTML placeholder from the nginx confi
 - Prettier for formatting (on save via hook)
 
 ### Naming
+
 - Files: `kebab-case.ts`
 - Components: `PascalCase.tsx`
 - Functions: `camelCase`
@@ -82,12 +85,14 @@ Currently the root domain serves an inline HTML placeholder from the nginx confi
 - CSS: Tailwind utility classes, BEM for custom CSS if needed
 
 ### Git
+
 - Branch format: `feature/<description>` or `fix/<description>`
 - Commit format: Conventional Commits (`feat:`, `fix:`, `refactor:`, etc.)
 - PR required for main branch
 - Never commit secrets, .env files, or node_modules
 
 ### Content
+
 - Project descriptions should be concise and outcome-focused
 - Use real metrics where available (users, performance, tech stack)
 - Images should be optimized (WebP, lazy-loaded)
@@ -95,6 +100,7 @@ Currently the root domain serves an inline HTML placeholder from the nginx confi
 ## SEO Requirements
 
 This is a public-facing portfolio site. SEO matters:
+
 - Unique title tags and meta descriptions on every page
 - Single H1 per page matching primary keyword intent
 - Structured data (LocalBusiness, Person, WebSite schemas)
@@ -106,23 +112,40 @@ This is a public-facing portfolio site. SEO matters:
 
 ## Testing
 
-- Framework: Vitest (or Playwright for e2e)
-- Run: `bun test`
+- **Unit/Integration**: Vitest (`bun test`)
+- **E2E / Visual**: Playwright (`bun test:e2e`)
 - Coverage target: 80% for utility code
 - E2E tests for critical user flows (navigation, contact form)
+
+### Pre-Commit Visual Testing (Required)
+
+Before every commit that changes UI:
+
+1. Start the dev server (`PORT=3001 bun dev`)
+2. Launch Playwright via the MCP tools (`browser_navigate` to `http://localhost:3001`)
+3. Take screenshots of every affected page/component
+4. Check browser developer tool console logs for errors/warnings (use `browser_console_messages`)
+5. Verify interactive elements work (clicks, form submissions, terminal commands)
+6. Test at mobile (375px) and desktop (1440px) viewports using `browser_resize`
+7. Only commit after visual and functional verification passes
+
+This applies to all UI changes: components, layouts, pages, styles. If you can see it in the browser, you must test it in the browser.
 
 ## Commands
 
 ```bash
-bun dev          # Development server
-bun build        # Production build
-bun test         # Run tests
-bun lint         # Lint code
+PORT=3001 bun dev    # Development server (port 3001, 3000 is taken)
+bun run build        # Production build (NOT bun build)
+bun test             # Run unit/integration tests
+bun test:e2e         # Run Playwright e2e tests
+bun lint             # Lint code
 ```
 
 ## Working Guidelines
 
 - Check `memory/MEMORY.md` before starting work to understand current status
 - Update `memory/MEMORY.md` after meaningful progress
-- Run `bun build` before declaring work complete
+- Run `bun run build` before declaring work complete
+- **Launch Playwright and visually test every UI change before committing**
+- **Check browser console logs for errors before committing**
 - Test on mobile viewport before pushing UI changes
