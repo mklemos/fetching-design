@@ -12,14 +12,28 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['name', 'email', 'role'],
     useAsTitle: 'name',
   },
-  auth: true,
+  auth: {
+    useAPIKey: true,
+  },
   fields: [
     {
       name: 'name',
       type: 'text',
+    },
+    {
+      name: 'role',
+      type: 'select',
+      defaultValue: 'admin',
+      options: [
+        { label: 'Admin', value: 'admin' },
+        { label: 'Agent', value: 'agent' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
     },
   ],
   timestamps: true,
