@@ -2,12 +2,27 @@
 const config = {
   theme: {
     extend: {
+      colors: {
+        brand: {
+          black: 'var(--brand-black)',
+          onyx: 'var(--brand-onyx)',
+          clay: 'var(--brand-clay)',
+          grey: 'var(--brand-grey)',
+          platinum: 'var(--brand-platinum)',
+          card: 'var(--brand-card)',
+          border: 'var(--brand-border)',
+          muted: 'var(--brand-muted)',
+          success: 'var(--brand-success)',
+        },
+      },
       typography: () => ({
         DEFAULT: {
           css: [
             {
-              '--tw-prose-body': 'var(--text)',
-              '--tw-prose-headings': 'var(--text)',
+              '--tw-prose-body': 'var(--foreground)',
+              '--tw-prose-headings': 'var(--foreground)',
+              '--tw-prose-links': 'var(--brand-clay)',
+              '--tw-prose-code': 'var(--brand-clay)',
               h1: {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',
