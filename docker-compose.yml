@@ -1,0 +1,19 @@
+services:
+  fetching-db:
+    image: postgres:16-alpine
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: payload
+      POSTGRES_DB: fetching_design
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U payload -d fetching_design']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
