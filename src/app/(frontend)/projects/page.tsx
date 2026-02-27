@@ -4,6 +4,8 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ProjectCard } from '@/components/ProjectCard'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProjectsPage() {
   const payload = await getPayload({ config: configPromise })
 

@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
+export const dynamic = 'force-dynamic'
+
 import { Hero } from '@/components/Homepage/Hero'
 import { ProjectsSection } from '@/components/Homepage/ProjectsSection'
 import { BlogPreviewSection } from '@/components/Homepage/BlogPreviewSection'
