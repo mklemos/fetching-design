@@ -18,6 +18,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://fetching.design}
     restart: unless-stopped
     ports:
       - '${APP_PORT:-3200}:3000'

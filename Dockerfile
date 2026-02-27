@@ -22,6 +22,11 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
+ARG PAYLOAD_SECRET
+ARG NEXT_PUBLIC_SERVER_URL
+ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
+ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+
 RUN \
   if [ -f bun.lock ]; then npm i -g bun && bun run build; \
   elif [ -f package-lock.json ]; then npm run build; \
