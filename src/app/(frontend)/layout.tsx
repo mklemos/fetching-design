@@ -86,6 +86,6 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@maxlemos',
+    creator: '@mklemos',
   },
 }

@@ -64,7 +64,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden max-h-[480px] md:block">
           <Terminal />
         </div>
       </div>

@@ -26,14 +26,14 @@ export default function ContactPage() {
           </a>
 
           <a
-            href="https://github.com/maxlemos"
+            href="https://github.com/mklemos"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center justify-between rounded-lg border border-[var(--brand-border)] bg-[var(--brand-card)] p-6 transition-colors hover:border-[var(--brand-clay)]"
           >
             <div>
               <p className="font-medium text-[var(--brand-platinum)]">GitHub</p>
-              <p className="text-sm text-[var(--brand-muted)]">@maxlemos</p>
+              <p className="text-sm text-[var(--brand-muted)]">@mklemos</p>
             </div>
             <span className="text-[var(--brand-muted)] group-hover:text-[var(--brand-clay)] transition-colors">
               &rarr;

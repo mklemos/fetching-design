@@ -31,15 +31,23 @@ export default function AboutPage() {
           <div className="flex flex-wrap gap-2">
             {[
               'TypeScript',
-              'Next.js',
+              'Python',
+              'Go',
               'React',
+              'Next.js',
+              'FastAPI',
               'Node.js',
               'PostgreSQL',
+              'Redis',
               'Docker',
-              'Tailwind CSS',
-              'Python',
+              'Nginx',
               'AWS',
+              'Tailwind CSS',
+              'Playwright',
+              'GraphQL',
               'Payload CMS',
+              'WordPress',
+              'scikit-learn',
             ].map((tech) => (
               <span
                 key={tech}

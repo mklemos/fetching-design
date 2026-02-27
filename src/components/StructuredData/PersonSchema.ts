@@ -9,7 +9,7 @@ export function PersonSchema() {
     name: 'Max Lemos',
     url: siteUrl,
     jobTitle: 'Full-Stack Developer',
-    sameAs: ['https://github.com/maxlemos'],
+    sameAs: ['https://github.com/mklemos'],
     worksFor: {
       '@type': 'Organization' as const,
       name: 'fetching.design',
