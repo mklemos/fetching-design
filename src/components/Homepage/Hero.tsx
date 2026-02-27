@@ -9,7 +9,7 @@ export function Hero() {
       <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
         <div className="flex flex-col justify-center">
           <h1 className="text-4xl font-bold tracking-tight text-[var(--brand-platinum)] md:text-5xl lg:text-6xl">
-            I build <span className="text-[var(--brand-clay)]">web applications</span> that deliver.
+            I build <span className="hero-shimmer">web applications</span> that deliver.
           </h1>
           <p className="mt-4 text-lg text-[var(--brand-muted)] md:text-xl">
             Full-stack development with modern tools. From concept to deployment.

@@ -250,3 +250,32 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/* Hero gold text shimmer - one-time diagonal sweep on page load */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.hero-shimmer {
+  color: var(--brand-clay);
+  background: linear-gradient(
+    120deg,
+    var(--brand-clay) 0%,
+    var(--brand-clay) 35%,
+    #f0d090 48%,
+    #fff8e7 50%,
+    #f0d090 52%,
+    var(--brand-clay) 65%,
+    var(--brand-clay) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 1.5s ease-in-out 0.5s 1 both;
+}
