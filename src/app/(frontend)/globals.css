@@ -266,9 +266,13 @@ html[data-theme='light'] {
   background: linear-gradient(
     120deg,
     var(--brand-clay) 0%,
-    var(--brand-clay) 40%,
-    #ffffff 50%,
-    var(--brand-clay) 60%,
+    var(--brand-clay) 35%,
+    #ecd08a 42%,
+    #fae6b0 46%,
+    #fff4d6 50%,
+    #fae6b0 54%,
+    #ecd08a 58%,
+    var(--brand-clay) 65%,
     var(--brand-clay) 100%
   );
   background-size: 300% 100%;
