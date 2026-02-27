@@ -251,7 +251,7 @@ html[data-theme='light'] {
   opacity: initial;
 }
 
-/* Hero gold text shimmer - one-time diagonal sweep on page load */
+/* Hero gold text shimmer - triggered by Intersection Observer */
 @keyframes shimmer {
   0% {
     background-position: 200% 0;
@@ -272,8 +272,12 @@ html[data-theme='light'] {
     var(--brand-clay) 100%
   );
   background-size: 300% 100%;
+  background-position: -200% 0;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 1.8s ease-in-out 1s 1 both;
+}
+
+.hero-shimmer--active {
+  animation: shimmer 3s ease-in-out 1 both;
 }
