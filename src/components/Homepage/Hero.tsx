@@ -6,8 +6,8 @@ import { Terminal } from '@/components/Terminal/Terminal'
 export function Hero() {
   return (
     <section className="container py-16 md:py-24">
-      <div className="grid gap-10 md:grid-cols-2 md:items-center">
-        <div>
+      <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
+        <div className="flex flex-col justify-center">
           <h1 className="text-4xl font-bold tracking-tight text-[var(--brand-platinum)] md:text-5xl lg:text-6xl">
             I build <span className="text-[var(--brand-clay)]">web applications</span> that deliver.
           </h1>
