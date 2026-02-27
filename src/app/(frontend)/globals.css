@@ -282,4 +282,21 @@ html[data-theme='light'] {
 
 .hero-shimmer--active {
   animation: shimmer 4s ease-in-out 1 forwards;
+  will-change: background-position;
+}
+
+/* Terminal blinking underscore cursor */
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.terminal-cursor {
+  color: var(--brand-clay);
+  animation: cursor-blink 1s step-end infinite;
 }

@@ -7,18 +7,18 @@ export function createRegistry(): Map<string, CommandHandler> {
     'help',
     (): CommandOutput => ({
       lines: [
-        { type: 'output', text: 'Available commands:' },
+        { type: 'info', text: 'Available commands:' },
         { type: 'output', text: '' },
-        { type: 'output', text: '  fetch <resource>   Navigate to a page' },
+        { type: 'accent', text: '  fetch <resource>   Navigate to a page' },
         { type: 'output', text: '    projects         View all projects' },
         { type: 'output', text: '    blog             Read blog posts' },
         { type: 'output', text: '    about            About Max Lemos' },
         { type: 'output', text: '    contact          Get in touch' },
         { type: 'output', text: '    status           Site status' },
-        { type: 'output', text: '  whoami             Who are you?' },
-        { type: 'output', text: '  pwd                Current location' },
-        { type: 'output', text: '  clear              Clear terminal' },
-        { type: 'output', text: '  help               Show this message' },
+        { type: 'accent', text: '  whoami             Who are you?' },
+        { type: 'accent', text: '  pwd                Current location' },
+        { type: 'accent', text: '  clear              Clear terminal' },
+        { type: 'accent', text: '  help               Show this message' },
       ],
     }),
   )
@@ -47,7 +47,7 @@ export function createRegistry(): Map<string, CommandHandler> {
     const route = routes[resource]
     if (route) {
       return {
-        lines: [{ type: 'info', text: route.message }],
+        lines: [{ type: 'success', text: route.message }],
         navigate: route.path,
       }
     }
@@ -64,7 +64,7 @@ export function createRegistry(): Map<string, CommandHandler> {
     'whoami',
     (): CommandOutput => ({
       lines: [
-        { type: 'output', text: 'visitor@fetching.design' },
+        { type: 'accent', text: 'visitor@fetching.design' },
         { type: 'output', text: 'Welcome to fetching.design, the portfolio of Max Lemos.' },
       ],
     }),
@@ -73,7 +73,7 @@ export function createRegistry(): Map<string, CommandHandler> {
   registry.set(
     'pwd',
     (): CommandOutput => ({
-      lines: [{ type: 'output', text: '/home/visitor/fetching.design' }],
+      lines: [{ type: 'accent', text: '/home/visitor/fetching.design' }],
     }),
   )
 
@@ -113,11 +113,11 @@ export function createRegistry(): Map<string, CommandHandler> {
     'curl',
     (): CommandOutput => ({
       lines: [
-        { type: 'output', text: 'HTTP/1.1 200 OK' },
-        { type: 'output', text: 'Content-Type: text/html' },
-        { type: 'output', text: 'X-Powered-By: fetching.design' },
+        { type: 'success', text: 'HTTP/1.1 200 OK' },
+        { type: 'info', text: 'Content-Type: text/html' },
+        { type: 'info', text: 'X-Powered-By: fetching.design' },
         { type: 'output', text: '' },
-        { type: 'info', text: 'Try "fetch" instead for navigation.' },
+        { type: 'output', text: 'Try "fetch" instead for navigation.' },
       ],
     }),
   )

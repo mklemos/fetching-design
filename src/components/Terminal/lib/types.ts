@@ -5,7 +5,7 @@ export interface ParsedCommand {
 }
 
 export interface OutputLine {
-  type: 'input' | 'output' | 'error' | 'info'
+  type: 'input' | 'output' | 'error' | 'info' | 'success' | 'accent'
   text: string
 }
 

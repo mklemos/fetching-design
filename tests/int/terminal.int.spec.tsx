@@ -193,7 +193,7 @@ describe('Terminal UI component', () => {
 
   it('renders with prompt indicator', () => {
     renderTerminal()
-    const prompt = screen.getByTestId('terminal').querySelector('[class*="brand-clay"]')
+    const prompt = screen.getByTestId('terminal').querySelector('span[class*="brand-clay"]')
     expect(prompt).not.toBeNull()
     expect(prompt!.textContent).toBe('$')
   })

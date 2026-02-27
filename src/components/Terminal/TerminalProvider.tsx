@@ -27,7 +27,10 @@ export function useTerminal(): TerminalContextValue {
 export function TerminalProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
-  const [output, setOutput] = useState<OutputLine[]>([])
+  const [output, setOutput] = useState<OutputLine[]>([
+    { type: 'info', text: 'Welcome to fetching.design' },
+    { type: 'output', text: "Type 'help' for available commands." },
+  ])
   const [history, setHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [overlayOpen, setOverlayOpen] = useState(false)
