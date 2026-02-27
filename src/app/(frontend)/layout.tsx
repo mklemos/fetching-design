@@ -51,6 +51,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="bg-[var(--brand-black)] text-[var(--brand-platinum)]">
         <Providers>
           <TerminalProvider>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[var(--brand-clay)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--brand-black)]"
+            >
+              Skip to content
+            </a>
             <AdminBar
               adminBarProps={{
                 preview: isEnabled,
@@ -59,7 +65,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <LivePreviewListener />
 
             <Header />
-            {children}
+            <div id="main-content">{children}</div>
             <Footer />
 
             <TerminalFAB />

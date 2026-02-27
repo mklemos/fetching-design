@@ -232,6 +232,20 @@ html {
   opacity: 0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  svg animate {
+    dur: 0s;
+  }
+}
+
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;

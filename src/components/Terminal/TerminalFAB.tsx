@@ -1,11 +1,12 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useTerminal } from './TerminalProvider'
 import { Terminal } from './Terminal'
 
 export function TerminalFAB() {
   const { mode, toggleOverlay } = useTerminal()
+  const reducedMotion = useReducedMotion()
 
   if (mode === 'hero') return null
 
@@ -14,10 +15,10 @@ export function TerminalFAB() {
       <AnimatePresence>
         {mode === 'overlay' && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.2 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: reducedMotion ? 0 : 0.2 }}
             className="fixed bottom-20 right-4 z-50 w-[min(480px,calc(100vw-2rem))]"
           >
             <Terminal />
