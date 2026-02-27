@@ -28,8 +28,15 @@ export function TerminalProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const [output, setOutput] = useState<OutputLine[]>([
-    { type: 'info', text: 'Welcome to fetching.design' },
-    { type: 'output', text: "Type 'help' for available commands." },
+    {
+      type: 'output',
+      text: 'Welcome to fetching.design. Type help to get started.',
+      segments: [
+        { type: 'output', text: 'Welcome to fetching.design. Type ' },
+        { type: 'info', text: 'help' },
+        { type: 'output', text: ' to get started.' },
+      ],
+    },
   ])
   const [history, setHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
@@ -59,7 +66,14 @@ export function TerminalProvider({ children }: { children: React.ReactNode }) {
       setHistory((prev) => [...prev, input])
       setHistoryIndex(-1)
 
-      const inputLine: OutputLine = { type: 'input', text: `$ ${parsed.raw}` }
+      const inputLine: OutputLine = {
+        type: 'input',
+        text: `~ $ ${parsed.raw}`,
+        segments: [
+          { type: 'info', text: '~ $ ' },
+          { type: 'input', text: parsed.raw },
+        ],
+      }
 
       if (!parsed.command) return
 
@@ -69,6 +83,16 @@ export function TerminalProvider({ children }: { children: React.ReactNode }) {
           ...prev,
           inputLine,
           { type: 'error', text: `command not found: ${parsed.command}` },
+          {
+            type: 'output',
+            text: 'Type help for available commands.',
+            segments: [
+              { type: 'output', text: 'Type ' },
+              { type: 'info', text: 'help' },
+              { type: 'output', text: ' for available commands.' },
+            ],
+          },
+          { type: 'output', text: '' },
         ])
         return
       }

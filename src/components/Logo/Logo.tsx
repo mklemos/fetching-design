@@ -26,10 +26,10 @@ export const Logo = ({ className }: Props) => {
         <tspan fill="var(--brand-clay, #D4A052)">.</tspan>
         <tspan fill="var(--brand-clay, #D4A052)">[)</tspan>
         <tspan>esign</tspan>
+        <tspan data-cursor="" fill="var(--brand-clay, #D4A052)">
+          <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite" />_
+        </tspan>
       </text>
-      <rect data-cursor="" x="242" y="8" width="2" height="20" fill="var(--brand-clay, #D4A052)">
-        <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite" />
-      </rect>
     </svg>
   )
 }

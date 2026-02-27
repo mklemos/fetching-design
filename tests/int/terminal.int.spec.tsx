@@ -193,9 +193,8 @@ describe('Terminal UI component', () => {
 
   it('renders with prompt indicator', () => {
     renderTerminal()
-    const prompt = screen.getByTestId('terminal').querySelector('span[class*="brand-clay"]')
-    expect(prompt).not.toBeNull()
-    expect(prompt!.textContent).toBe('$')
+    const prompt = screen.getByText('~ $')
+    expect(prompt).toBeDefined()
   })
 
   it('submits command on Enter', async () => {
@@ -215,7 +214,7 @@ describe('Terminal UI component', () => {
       fireEvent.change(input, { target: { value: 'whoami' } })
       fireEvent.keyDown(input, { key: 'Enter' })
     })
-    expect(screen.getByText('$ whoami')).toBeDefined()
+    expect(screen.getByText('whoami')).toBeDefined()
   })
 
   it('clears input after submission', async () => {

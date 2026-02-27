@@ -7,18 +7,49 @@ export function createRegistry(): Map<string, CommandHandler> {
     'help',
     (): CommandOutput => ({
       lines: [
-        { type: 'info', text: 'Available commands:' },
+        { type: 'output', text: 'Available commands:' },
         { type: 'output', text: '' },
-        { type: 'accent', text: '  fetch <resource>   Navigate to a page' },
-        { type: 'output', text: '    projects         View all projects' },
-        { type: 'output', text: '    blog             Read blog posts' },
-        { type: 'output', text: '    about            About Max Lemos' },
-        { type: 'output', text: '    contact          Get in touch' },
-        { type: 'output', text: '    status           Site status' },
-        { type: 'accent', text: '  whoami             Who are you?' },
-        { type: 'accent', text: '  pwd                Current location' },
-        { type: 'accent', text: '  clear              Clear terminal' },
-        { type: 'accent', text: '  help               Show this message' },
+        {
+          type: 'output',
+          text: '  fetch projects       List all projects',
+          segments: [
+            { type: 'info', text: '  fetch projects' },
+            { type: 'output', text: '       List all projects' },
+          ],
+        },
+        {
+          type: 'output',
+          text: '  fetch <name>         View project details',
+          segments: [
+            { type: 'info', text: '  fetch <name>' },
+            { type: 'output', text: '         View project details' },
+          ],
+        },
+        {
+          type: 'output',
+          text: '  fetch status         System status',
+          segments: [
+            { type: 'info', text: '  fetch status' },
+            { type: 'output', text: '         System status' },
+          ],
+        },
+        {
+          type: 'output',
+          text: '  whoami               About me',
+          segments: [
+            { type: 'info', text: '  whoami' },
+            { type: 'output', text: '               About me' },
+          ],
+        },
+        {
+          type: 'output',
+          text: '  clear                Clear terminal',
+          segments: [
+            { type: 'info', text: '  clear' },
+            { type: 'output', text: '                Clear terminal' },
+          ],
+        },
+        { type: 'output', text: '' },
       ],
     }),
   )
@@ -47,15 +78,41 @@ export function createRegistry(): Map<string, CommandHandler> {
     const route = routes[resource]
     if (route) {
       return {
-        lines: [{ type: 'success', text: route.message }],
+        lines: [
+          {
+            type: 'output',
+            text: `GET ${route.path}  200 OK`,
+            segments: [
+              { type: 'output', text: `GET ${route.path}  ` },
+              { type: 'success', text: '200 OK' },
+            ],
+          },
+        ],
         navigate: route.path,
       }
     }
 
     return {
       lines: [
-        { type: 'error', text: `Resource not found: ${args[0]}` },
-        { type: 'info', text: 'Try: fetch projects, fetch blog, fetch about, fetch contact' },
+        {
+          type: 'output',
+          text: `GET /api/${args[0]}  404 Not Found`,
+          segments: [
+            { type: 'output', text: `GET /api/${args[0]}  ` },
+            { type: 'error', text: '404 Not Found' },
+          ],
+        },
+        { type: 'output', text: '' },
+        {
+          type: 'output',
+          text: `No resource matching "${args[0]}". Try fetch projects to see all.`,
+          segments: [
+            { type: 'output', text: `No resource matching "${args[0]}". Try ` },
+            { type: 'info', text: 'fetch projects' },
+            { type: 'output', text: ' to see all.' },
+          ],
+        },
+        { type: 'output', text: '' },
       ],
     }
   })
@@ -64,8 +121,20 @@ export function createRegistry(): Map<string, CommandHandler> {
     'whoami',
     (): CommandOutput => ({
       lines: [
-        { type: 'accent', text: 'visitor@fetching.design' },
-        { type: 'output', text: 'Welcome to fetching.design, the portfolio of Max Lemos.' },
+        { type: 'output', text: '' },
+        { type: 'input', text: '  Max Lemos' },
+        { type: 'output', text: "  Full-stack developer. UCSB MTM '26." },
+        { type: 'output', text: '  I build web applications that deliver.' },
+        { type: 'output', text: '' },
+        {
+          type: 'output',
+          text: '  Email:  max@fetching.design',
+          segments: [
+            { type: 'output', text: '  Email:  ' },
+            { type: 'info', text: 'max@fetching.design' },
+          ],
+        },
+        { type: 'output', text: '' },
       ],
     }),
   )
@@ -73,7 +142,7 @@ export function createRegistry(): Map<string, CommandHandler> {
   registry.set(
     'pwd',
     (): CommandOutput => ({
-      lines: [{ type: 'accent', text: '/home/visitor/fetching.design' }],
+      lines: [{ type: 'input', text: '/home/max/fetching.design' }],
     }),
   )
 
@@ -95,17 +164,18 @@ export function createRegistry(): Map<string, CommandHandler> {
   registry.set(
     'exit',
     (): CommandOutput => ({
-      lines: [{ type: 'info', text: 'There is no escape. Try "fetch home" instead.' }],
+      lines: [
+        { type: 'output', text: 'You can check out any time you like,' },
+        { type: 'output', text: 'but you can never leave.' },
+        { type: 'output', text: '' },
+      ],
     }),
   )
 
   registry.set(
     'npm',
     (): CommandOutput => ({
-      lines: [
-        { type: 'error', text: 'npm: command not found' },
-        { type: 'info', text: 'We use bun here.' },
-      ],
+      lines: [{ type: 'info', text: 'We use bun here.' }],
     }),
   )
 
@@ -113,11 +183,16 @@ export function createRegistry(): Map<string, CommandHandler> {
     'curl',
     (): CommandOutput => ({
       lines: [
-        { type: 'success', text: 'HTTP/1.1 200 OK' },
-        { type: 'info', text: 'Content-Type: text/html' },
-        { type: 'info', text: 'X-Powered-By: fetching.design' },
+        {
+          type: 'output',
+          text: 'Why curl when you can fetch?',
+          segments: [
+            { type: 'output', text: 'Why curl when you can ' },
+            { type: 'info', text: 'fetch' },
+            { type: 'output', text: '?' },
+          ],
+        },
         { type: 'output', text: '' },
-        { type: 'output', text: 'Try "fetch" instead for navigation.' },
       ],
     }),
   )

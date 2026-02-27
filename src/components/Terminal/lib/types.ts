@@ -4,9 +4,17 @@ export interface ParsedCommand {
   args: string[]
 }
 
-export interface OutputLine {
-  type: 'input' | 'output' | 'error' | 'info' | 'success' | 'accent'
+export type OutputType = 'input' | 'output' | 'error' | 'info' | 'success' | 'accent'
+
+export interface OutputSegment {
+  type: OutputType
   text: string
+}
+
+export interface OutputLine {
+  type: OutputType
+  text: string
+  segments?: OutputSegment[]
 }
 
 export interface CommandOutput {
