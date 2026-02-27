@@ -266,16 +266,14 @@ html[data-theme='light'] {
   background: linear-gradient(
     120deg,
     var(--brand-clay) 0%,
-    var(--brand-clay) 35%,
-    #f0d090 48%,
-    #fff8e7 50%,
-    #f0d090 52%,
-    var(--brand-clay) 65%,
+    var(--brand-clay) 40%,
+    #ffffff 50%,
+    var(--brand-clay) 60%,
     var(--brand-clay) 100%
   );
-  background-size: 200% 100%;
+  background-size: 300% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 1.5s ease-in-out 0.5s 1 both;
+  animation: shimmer 1.8s ease-in-out 1s 1 both;
 }
