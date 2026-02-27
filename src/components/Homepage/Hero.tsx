@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { Terminal } from '@/components/Terminal/Terminal'
 
@@ -24,6 +24,12 @@ export function Hero() {
     return () => observer.disconnect()
   }, [])
 
+  const handleShimmerEnd = useCallback(() => {
+    if (shimmerRef.current) {
+      shimmerRef.current.style.willChange = 'auto'
+    }
+  }, [])
+
   return (
     <section className="container py-16 md:py-24">
       <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
@@ -33,6 +39,7 @@ export function Hero() {
             <span
               ref={shimmerRef}
               className={`hero-shimmer ${shimmerActive ? 'hero-shimmer--active' : ''}`}
+              onAnimationEnd={handleShimmerEnd}
             >
               web applications
             </span>{' '}
